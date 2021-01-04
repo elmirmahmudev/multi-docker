@@ -1,28 +1,22 @@
 language: generic
 services:
-  - docker
-
+- docker
 before_install:
-  - docker build -t itismelmir/react-test -f ./client/Dockerfile.dev ./client
-  
+- docker build -t itismelmir/react-test -f ./client/Dockerfile.dev ./client
 script:
-  - docker run -e CI=true itismelmir/react-test npm test
-
+- docker run -e CI=true itismelmir/react-test npm test
 after_success:
-  - docker build -t itismelmir/multi-client ./client
-  - docker build -t itismelmir/multi-nginx ./nginx
-  - docker build -t itismelmir/multi-server ./server
-  - docker build -t itismelmir/multi-worker ./worker
-  # login to docker
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-  # push to dockerhub
-  - docker push itismelmir/multi-client
-  - docker push itismelmir/multi-nginx
-  - docker push itismelmir/multi-server
-  - docker push itismelmir/multi-worker
-
+- docker build -t itismelmir/multi-client ./client
+- docker build -t itismelmir/multi-nginx ./nginx
+- docker build -t itismelmir/multi-server ./server
+- docker build -t itismelmir/multi-worker ./worker
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+- docker push itismelmir/multi-client
+- docker push itismelmir/multi-nginx
+- docker push itismelmir/multi-server
+- docker push itismelmir/multi-worker
 deploy:
   provider: heroku
   api_key:
-    secure: nZhWmiThfM1ZcwKjFnxow6BwqxQT85nj3D/QZbUoc3lCvUAJF2PiFaEPdxr+Mb6qpZoISGhA7xmxaycTrQ2clrMQExfW+HdbwhhW3oY42vm0Iice5ADDUqCzGxZjcbK3+5a7rQH62Csme4lbELJ/4E70lidN/mjBZRNJNtNtNZJttGNTZ49fc+YgKXCMdNr0eyQeh9NPxl3M3NSdOZitBljQNUTFTQR47JkUa5WGONjy4ueVs8frQcBtgjREbmhnkpfEU4iyZS3VdbqszztYc28Ndk6Z/8zcsY///2ebUBwD9/4hm1RAlr3wV0E6pHUWNhp3mRmo0JgngaSRyIK4VJSEH1SGppH2BEadn0ZdMWfbTnPywV+DTznfPYZMiNJmWmRcA9rgFVwHuBzLMyO2Id/M+Glj7R8i+s9/6aSh2A+jyBCrQm7EZ+heQw1KVN5Ehw1Gvygu2phWfUfyqi2J0bXyltpA+AVl6TvxuroRUpszMg882OCsEDXDyTMCaviJWxRsVpjobhHrWBRnPoC5yLNukh7ipyEpmxfoICAFYu/n8Ugko19rJ+oCJG1XuIha3k84u+IGBIkqsDtbYtb2GNeln5tXGJQQZvMkSfAwwRvCQ3tPMiZyASi9IZMw8mdFM9Q/p8pO7RoNXlK9wY5Vr/OhUGdOmhwKckw+/5jgC5Q=
+    secure: topcYv8Hq/OX1/i02Y6s9CSjeAXfBSDyjwjvOXSDOqZwSXPZnAZgboWZoNwVYwkrG3jwdfFqqQ39hjTLKQoTPolyeiSjAyvf8LIDydXBJlbw534u1O0WrcdHpjBRGjskBIXuohRvbRKmmR4I8SDoDn2lW/ZPOQcHCzSEADC4OTcMS4qhB85Fl49AyDView+JtjUWEFUUkpwgh7rvWCWiw4/RqBhhqskbOUmbp78Wl4ELayRbLFpFQtOXBSLozvoW6HkG7HdNj4WMPHh6YPFif1YZlYsKeWq/CAXAmsdve8DYTDuNkauDOjIOFahNi6ibd9L3XIOgrCMhFbhhYnbbysdJ5dDPM5NOnqv9PKwR8HPyVu4/L322XiMgghH3h2NQ6D6aEDc1e42VHtF8VWfgsF0Ux4iGaPTSnxAgVv93xwgE8mp97ObRIUn01Q4CYVi8Di6jzGNg5ITYVUNK3dk0UjRHGXDYKHblyZOsV8oGwsjty2mC/MouuT8tUcYRM2ceiPkOrvA0Abl2+vZZPJDtzmEE8afeN6DLXUwEFO875Y5SAoy9JpgN35yxH5duAin8CAoNlCVovvJx4jdPO6b8Cx6+6cVyLl5JpGfoNxHRU/P7ZftNWewvYYwSO/zHYRekg2PdQinLVuWRr4Ipm0bUG/YOF35KpM1atMPNjUJpVyc=
   app: multi-docker-node
